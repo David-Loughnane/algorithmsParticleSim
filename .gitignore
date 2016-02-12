@@ -9,3 +9,9 @@
 #Ignore generated files
 *.class
 
+#Ignore Eclipse Generated Project Files
+*.project
+*.metadata
+*.classpath
+
+/bin
