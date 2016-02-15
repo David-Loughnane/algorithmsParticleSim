@@ -119,11 +119,11 @@ public class Particle{
             }
             break;
         }
-    
+
         if (t > 0) {
             c = new ParticleWallCollision(p, w, now + t);
         }
-        
+
         return c;
     }
 

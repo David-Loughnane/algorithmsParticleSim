@@ -8,14 +8,17 @@ public class ParticleSimulation implements Runnable, ParticleEventHandler{
 
     private static final long FRAME_INTERVAL_MILLIS = 40;
     
-    private final ParticlesModel          model;
-    private final ParticlesView           screen;
+    private final ParticlesModel model;
+    private final ParticlesView screen;
+    private MinPriorityQueue<Event> pq = new MinPriorityQueue<~>();
+    private double t = 0.0;
     
     /**
      * Constructor.
      */
     public ParticleSimulation(String name, ParticlesModel m) {
-        // TODO implement constructor
+        Tick new_tick = new Tick(1);
+        pq.add(new_tick);
     }
 
     /**
@@ -30,8 +33,6 @@ public class ParticleSimulation implements Runnable, ParticleEventHandler{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
-        // TODO complete implementing this method
-    }
 
+    }
 }
