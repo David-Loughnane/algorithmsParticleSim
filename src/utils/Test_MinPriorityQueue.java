@@ -3,7 +3,6 @@ package utils;
 public class Test_MinPriorityQueue {
 
 	
-	
 	public static void main(String [] args){
     	
     	MinPriorityQueue<Integer> testQ = new MinPriorityQueue<Integer>();

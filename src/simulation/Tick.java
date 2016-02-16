@@ -14,7 +14,7 @@ public class Tick extends AbstractEvent {
     }
 
     @Override
-    public void happen(ParticleEventHandler h) {
+    public void happen(ParticleEventHandler h)  {
         h.reactTo(this);
     }
 }

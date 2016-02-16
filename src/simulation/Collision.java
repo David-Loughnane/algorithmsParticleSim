@@ -16,6 +16,7 @@ public abstract class Collision extends AbstractEvent{
     /**
      * Returns true if this Collision is (still) valid.
      */
+    // CHECK DEFINITION OF ISVALID
     public boolean isValid() {
         for (int i = 0; i < ps.length; i++) {
             if (ps[i].collisions() != 0) {

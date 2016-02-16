@@ -4,21 +4,29 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
 import utils.MinPriorityQueue;
 
+
 public class ParticleSimulation implements Runnable, ParticleEventHandler{
 
     private static final long FRAME_INTERVAL_MILLIS = 40;
     
-    private final ParticlesModel model;
+    private final ParticlesModel particle_model;
     private final ParticlesView screen;
-    private MinPriorityQueue<Event> pq = new MinPriorityQueue<~>();
+    private MinPriorityQueue<Event> pq = new MinPriorityQueue<>();
     private double t = 0.0;
+    private Event next_event;
     
     /**
      * Constructor.
      */
     public ParticleSimulation(String name, ParticlesModel m) {
+        screen = new ParticlesView(name, m);
+        particle_model = m;
         Tick new_tick = new Tick(1);
         pq.add(new_tick);
+        Iterable<Collision> initial_collisions = m.predictAllCollisions(t);
+        for (Collision collision_to_add : initial_collisions) {
+            pq.add(collision_to_add);
+        }
     }
 
     /**
@@ -33,6 +41,38 @@ public class ParticleSimulation implements Runnable, ParticleEventHandler{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        while(!pq.isEmpty()) {
+            next_event = pq.remove();
+            if (next_event.isValid()) {
+                t = next_event.time();
+                particle_model.moveParticles(t);
 
+
+                //SOMETHING SHOULD HAPPEN HERE
+                //next_event.happen();
+
+            }
+        }
+    }
+
+
+    @Override
+    public void reactTo(Tick tick) {
+        try {
+            Thread.sleep(FRAME_INTERVAL_MILLIS); //throw exception
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        screen.update();
+        pq.add(tick);
+    }
+
+    @Override
+    public void reactTo(Collision c) {
+        Iterable<Collision> new_collisions = particle_model.predictAllCollisions(t);
+        for (Collision collision_to_add : new_collisions) {
+            pq.add(collision_to_add);
+        }
     }
 }
