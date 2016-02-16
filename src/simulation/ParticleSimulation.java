@@ -44,13 +44,18 @@ public class ParticleSimulation implements Runnable, ParticleEventHandler{
         while(!pq.isEmpty()) {
             next_event = pq.remove();
             if (next_event.isValid()) {
+            	double oldT = t;
                 t = next_event.time();
-                particle_model.moveParticles(t);
+                particle_model.moveParticles(t - oldT);
 
-
-                //SOMETHING SHOULD HAPPEN HERE
-                //next_event.happen();
-
+                try {
+					next_event.happen(this);
+					//System.out.println(next_event);
+				} catch (InterruptedException e) {
+					System.out.println(e);
+					e.printStackTrace();
+				}
+                
             }
         }
     }
@@ -65,7 +70,8 @@ public class ParticleSimulation implements Runnable, ParticleEventHandler{
             e.printStackTrace();
         }
         screen.update();
-        pq.add(tick);
+        Tick newT = new Tick(tick.time()+1.0); 
+        pq.add(newT);
     }
 
     @Override
